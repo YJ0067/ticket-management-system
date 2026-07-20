@@ -12,6 +12,7 @@ import {
 
 
 
+
 type CreateTicketInput = z.infer<typeof TicketSchema>;
 type UpdateTicketInput = z.infer<typeof UpdateTicketSchema>;
 
@@ -66,52 +67,46 @@ export async function getTickets(
   page: number = 1,
   limit: number = 5
 ) {
-  const where = {
-    AND: [
-      status
-        ? {
-            status,
-          }
-        : {},
+  const where: any = {};
 
-      search
-        ? {
-            OR: [
-              {
-                ticketId: {
-                  contains: search,
-                  mode: "insensitive",
-                },
-              },
-              {
-                customerName: {
-                  contains: search,
-                  mode: "insensitive",
-                },
-              },
-              {
-                customerEmail: {
-                  contains: search,
-                  mode: "insensitive",
-                },
-              },
-              {
-                title: {
-                  contains: search,
-                  mode: "insensitive",
-                },
-              },
-              {
-                description: {
-                  contains: search,
-                  mode: "insensitive",
-                },
-              },
-            ],
-          }
-        : {},
-    ],
-  };
+  if (status) {
+    where.status = status;
+  }
+
+  if (search) {
+    where.OR = [
+      {
+        ticketId: {
+          contains: search,
+          mode: "insensitive" as const,
+        },
+      },
+      {
+        customerName: {
+          contains: search,
+          mode: "insensitive" as const,
+        },
+      },
+      {
+        customerEmail: {
+          contains: search,
+          mode: "insensitive" as const,
+        },
+      },
+      {
+        title: {
+          contains: search,
+          mode: "insensitive" as const,
+        },
+      },
+      {
+        description: {
+          contains: search,
+          mode: "insensitive" as const,
+        },
+      },
+    ];
+  }
 
   const totalTickets = await prisma.ticket.count({
     where,
