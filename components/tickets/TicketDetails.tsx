@@ -265,7 +265,7 @@ export default function TicketDetails({
           </CardHeader>
 
           <CardContent>
-            <p className="whitespace-pre-wrap leading-7 text-gray-100">
+            <p className="whitespace-pre-wrap leading-7 text-lg">
               {ticket.description}
             </p>
           </CardContent>
